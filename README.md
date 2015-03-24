@@ -58,12 +58,11 @@ In your project's Gruntfile, add a section named `qunit_blanket_lcov` to the dat
 ```js
 grunt.initConfig({
   qunit_blanket_lcov: {
-    options: {
-      inject_reporter: true
-    },
     lib: {
       src: 'src/library.js',
-      dest: '.coverage-results/library.lcov'
+      options: {
+        dest: '.coverage-results/library.lcov'
+      }
     }
   }
 });
@@ -86,6 +85,11 @@ Default value: `true`
 
 Automatically insert the custom Blanket reporter in the PhantomJS instance. If you redefined the `inject` option of `grunt-contrib-qunit` you must set this option to `false` and manually add `node_modules/grunt-qunit-blanket-lcov/reporter.js` to the inject list.
 
+#### dest
+Type: `string` **Required**
+
+Output file for LCOV data.
+
 ### Usage Examples
 
 #### One file
@@ -96,7 +100,9 @@ grunt.initConfig({
   qunit_blanket_lcov: {
     lib: {
       src: 'src/library.js',
-      dest: '.coverage-results/library.lcov'
+      options: {
+        dest: '.coverage-results/library.lcov'
+      }
     }
   }
 });
@@ -109,18 +115,13 @@ If you have many source files used by QUnit analyzed by Blanket it might be a go
 grunt.initConfig({
   qunit_blanket_lcov: {
     all: {
-        files: [{
-            expand: true,
-            src: ['src/*.js', 'src/plugins/**/plugin.js'],
-            dest: '.coverage-results',
-            ext: '.lcov',
-            rename: function(dest, src) {
-                if (src.indexOf('plugins') !== -1) {
-                    src = src.replace(/plugins\/([^\/]+)\/plugin.lcov$/, 'plugin-$1.lcov');
-                }
-                return dest + src.replace(/^src/, '');
-            }
-        }]
+      files: [{
+        expand: true,
+        src: ['src/*.js', 'src/plugins/**/plugin.js']
+      }],
+      options: {
+        dest: '.coverage-results/all.lcov'
+      }
     }
   }
 });
