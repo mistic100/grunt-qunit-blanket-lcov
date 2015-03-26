@@ -24,10 +24,7 @@ module.exports = function(grunt) {
             return;
         }
 
-        grunt.file.mkdir(path.dirname(options.dest));
-        if (grunt.file.exists(options.dest)) {
-            grunt.file.delete(options.dest);
-        }
+        grunt.file.write(options.dest, '');
 
         if (options.inject_reporter) {
             grunt.config.merge({
