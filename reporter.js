@@ -1,7 +1,6 @@
-blanket.options('reporter', function(coverageData) {
-    for (var file in coverageData.files) {
-        var data = coverageData.files[file];
-        delete data.source;
-        alert(JSON.stringify(['qunit.report', data, file]));
+blanket.options('reporter', function(data) {
+    for (var file in data.files) {
+        delete data.files[file].source;
     }
+    alert(JSON.stringify(['qunit.report', data.files]));
 });

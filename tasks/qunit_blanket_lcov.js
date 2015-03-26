@@ -9,7 +9,6 @@
 "use strict";
 
 var path = require('path');
-var fs = require('fs');
 
 module.exports = function(grunt) {
 
@@ -23,8 +22,6 @@ module.exports = function(grunt) {
             grunt.log.error('No destination file provided to qunit-blanket-lcov');
             return;
         }
-
-        grunt.file.write(options.dest, '');
 
         if (options.inject_reporter) {
             grunt.config.merge({
@@ -44,27 +41,27 @@ module.exports = function(grunt) {
             files[file.src[0]] = true;
         });
 
-        grunt.event.on('qunit.report', function(data, file) {
-            file = file.replace('file:///', '');
+        grunt.event.on('qunit.report', function(data) {
+            var str = '';
 
-            var relFile = path.relative(process.cwd(), file).split(path.sep).join('/');
+            for (var file in data) {
+                var relFile = path.relative(process.cwd(), file.replace('file:///', '')).split(path.sep).join('/');
 
-            if (files[relFile]) {
-                var str = 'SF:' + relFile + '\n';
+                if (files[relFile]) {
+                    str+= 'SF:' + relFile + '\n';
 
-                data.forEach(function(val, line) {
-                    if (val !== undefined && val !== null) {
-                        str+= 'DA:' + line + ',' + val + '\n';
-                    }
-                });
+                    data[file].forEach(function(val, line) {
+                        if (val !== undefined && val !== null) {
+                            str+= 'DA:' + line + ',' + val + '\n';
+                        }
+                    });
 
-                str+= 'end_of_record\n';
-                
-                fs.appendFileSync(options.dest, str);
+                    str+= 'end_of_record\n';
+                }
             }
-        });
 
-        grunt.event.on('qunit.done', function() {
+            grunt.file.write(options.dest, str);
+
             grunt.log.ok('LCOV file created');
         });
     });
