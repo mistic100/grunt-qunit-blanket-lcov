@@ -78,6 +78,17 @@ grunt.registerTask('test', [
 ```
 
 ### Options
+#### dest
+Type: `string` **Required**
+
+Output file for LCOV data.
+
+#### force
+Type: `boolean`
+Default value: `false`
+
+By default the task will fail if there is no coverage results to write.
+
 
 #### inject_reporter
 Type: `boolean`
@@ -85,10 +96,6 @@ Default value: `true`
 
 Automatically insert the custom Blanket reporter in the PhantomJS instance. If you redefined the `inject` option of `grunt-contrib-qunit` you must set this option to `false` and manually add `node_modules/grunt-qunit-blanket-lcov/reporter.js` to the inject list.
 
-#### dest
-Type: `string` **Required**
-
-Output file for LCOV data.
 
 ### Usage Examples
 
@@ -109,7 +116,7 @@ grunt.initConfig({
 ```
 
 #### Multiple files
-If you have many source files used by QUnit analyzed by Blanket it might be a good idea to use the Grunt files globbing option. This example will save all coverage results with renaming for some files.
+If you have many source files used by QUnit analyzed by Blanket it might be a good idea to use the Grunt files globbing option.
 
 ```js
 grunt.initConfig({
