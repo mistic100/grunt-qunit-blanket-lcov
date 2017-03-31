@@ -61,6 +61,7 @@ grunt.initConfig({
     lib: {
       src: 'src/library.js',
       options: {
+        prefix: 'http://localhost:<%= connect.test.options.port %>/',
         dest: '.coverage-results/library.lcov'
       }
     }
@@ -83,12 +84,16 @@ Type: `string` **Required**
 
 Output file for LCOV data.
 
+#### prefix
+Type: `string` **Required**
+
+The prefix to remove from file paths, this is generally the host + port of the `grunt-contrib-connect` task you use.
+
 #### force
 Type: `boolean`
 Default value: `false`
 
 By default the task will fail if there is no coverage results to write.
-
 
 #### inject_reporter
 Type: `boolean`
@@ -108,6 +113,7 @@ grunt.initConfig({
     lib: {
       src: 'src/library.js',
       options: {
+        prefix: 'http://localhost:9001/',
         dest: '.coverage-results/library.lcov'
       }
     }
@@ -127,6 +133,7 @@ grunt.initConfig({
         src: ['src/*.js', 'src/plugins/**/plugin.js']
       }],
       options: {
+        prefix: 'http://localhost:9001/',
         dest: '.coverage-results/all.lcov'
       }
     }
